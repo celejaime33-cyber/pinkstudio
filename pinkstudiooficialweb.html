@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pink Studio — Portfolio de Celeste</title>
+    <!-- Google Fonts: Playfair Display para títulos elegantes y Plus Jakarta Sans para legibilidad -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            // Una paleta súper rosa y dulce que elimina los fondos blancos fríos
+                            lightBg: '#FFEBF0',      // Fondo general rosa pastel cálido y acogedor
+                            lightCard: '#FFF3F6',    // Fondo de tarjetas rosa crema ultra-suave
+                            darkBg: '#1A0B10',       // Modo oscuro: un negro con matices ciruela/rosa profundo
+                            darkCard: '#2D141E',     // Tarjetas oscuras con matiz rosa profundo
+                            pinkPastel: '#FFC2D1',   // Rosa pastel medio para bordes y detalles
+                            pinkMedium: '#FF85A1',   // Rosa vibrante para botones primarios
+                            pinkDark: '#C93B5F',     // Rosa oscuro para textos legibles sobre fondos rosas
+                            accent: '#FF477E',       // Rosa brillante para interactividad
+                            sparkle: '#FFA3B1'
+                        }
+                    },
+                    fontFamily: {
+                        serif: ['"Playfair Display"', 'serif'],
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome para iconos limpios -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Transiciones fluidas globales */
+        * {
+            transition: background-color 0.4s ease, border-color 0.4s ease, color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+        }
+        .glow-pink-soft {
+            box-shadow: 0 10px 30px rgba(255, 133, 161, 0.25);
+        }
+        .dark .glow-pink-soft {
+            box-shadow: 0 10px 35px rgba(255, 71, 126, 0.15);
+        }
+        /* Animaciones para detalles de chispas */
+        @keyframes floating {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-8px) rotate(5deg); }
+        }
+        .animate-float {
+            animation: floating 4s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body class="bg-brand-lightBg dark:bg-brand-darkBg text-zinc-800 dark:text-zinc-200 font-sans min-h-screen selection:bg-brand-pinkPastel selection:text-brand-pinkDark antialiased">
+
+    <!-- Navegación Glassmorphic en tonos Rosa Crema -->
+    <nav class="sticky top-0 z-40 bg-brand-lightCard/90 dark:bg-brand-darkBg/90 backdrop-blur-md border-b border-brand-pinkPastel/35 dark:border-brand-darkCard/50">
+        <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+            <!-- Logo y Nombre de Marca -->
+            <a href="#" class="flex items-center gap-3 group">
+                <!-- Contenedor del logo limpio, transparente y perfectamente redondo -->
+                <div class="relative w-10 h-10 aspect-square flex items-center justify-center overflow-hidden border border-brand-pinkPastel/30" style="border-radius: 50%;">
+                    <img src="LOGO - Pink Studio - sin fondo.png" alt="Pink Studio" class="w-full h-full object-cover">
+                </div>
+                <div class="flex flex-col">
+                    <span class="font-serif font-semibold text-lg tracking-wider text-brand-pinkDark dark:text-white group-hover:text-brand-accent transition-colors">PINK STUDIO</span>
+                    <span class="text-[10px] tracking-[0.2em] uppercase text-brand-pinkMedium dark:text-brand-pinkPastel">Diseño Visual</span>
+                </div>
+            </a>
+
+            <!-- Enlaces de Navegación -->
+            <div class="hidden md:flex items-center gap-8 font-medium text-sm">
+                <a href="#inicio" class="hover:text-brand-accent text-brand-pinkDark dark:text-zinc-300">Inicio</a>
+                <a href="#sobre-mi" class="hover:text-brand-accent text-brand-pinkDark dark:text-zinc-300">Sobre Mí</a>
+                <a href="#portfolio" class="hover:text-brand-accent text-brand-pinkDark dark:text-zinc-300">Portfolio</a>
+                <a href="#contacto" class="hover:text-brand-accent text-brand-pinkDark dark:text-zinc-300">Contacto</a>
+            </div>
+
+            <!-- Botones de Acción -->
+            <div class="flex items-center gap-4">
+                <!-- Botón de Tema (Sol/Luna) -->
+                <button id="theme-toggle" class="p-2.5 rounded-full bg-brand-pinkPastel/30 dark:bg-brand-darkCard hover:bg-brand-pinkPastel/50 dark:hover:bg-brand-pinkMedium/20 text-brand-pinkDark dark:text-zinc-300 hover:text-brand-accent dark:hover:text-brand-pinkPastel" aria-label="Cambiar modo de luz/oscuridad">
+                    <i id="theme-icon" class="fa-solid fa-moon text-lg"></i>
+                </button>
+                <!-- Botón Directo Instagram -->
+                <a href="https://www.instagram.com/pinkstudio.ar?igsh=MXZzcXdyMWIyOW15cA==" target="_blank" rel="noopener" class="hidden sm:inline-flex items-center gap-2 px-5 py-2.5 bg-brand-pinkMedium hover:bg-brand-accent text-white dark:bg-brand-pinkMedium/20 dark:hover:bg-brand-pinkMedium/40 dark:text-brand-pinkPastel font-medium text-xs tracking-wider uppercase rounded-full shadow-sm">
+                    <i class="fa-brands fa-instagram text-sm"></i>
+                    <span>Instagram</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Héroe / Bienvenida principal -->
+    <header id="inicio" class="relative overflow-hidden pt-12 pb-24 lg:pt-20 lg:pb-32">
+        <!-- Decoraciones de Fondo Rosas Suaves -->
+        <div class="absolute top-20 left-10 w-72 h-72 bg-brand-pinkPastel/50 rounded-full blur-3xl -z-10 animate-pulse"></div>
+        <div class="absolute bottom-10 right-10 w-96 h-96 bg-brand-pinkMedium/30 rounded-full blur-3xl -z-10"></div>
+        
+        <!-- Sparkles de fantasía en CSS -->
+        <div class="absolute top-1/4 right-1/4 text-brand-pinkMedium/40 animate-float pointer-events-none">
+            <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0l3 9 9 3-9 3-3 9-3-9-9-3 9-3z"/></svg>
+        </div>
+        <div class="absolute bottom-1/4 left-1/4 text-brand-pinkPastel/60 animate-float pointer-events-none" style="animation-delay: 1.5s;">
+            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0l3 9 9 3-9 3-3 9-3-9-9-3 9-3z"/></svg>
+        </div>
+
+        <div class="max-w-4xl mx-auto px-6 text-center">
+            
+            <!-- Contenedor del LOGO REAL sin fondo y perfectamente redondo -->
+            <div class="inline-flex items-center justify-center p-4 mb-8 w-[230px] h-[230px] sm:w-[270px] sm:h-[270px] aspect-square hover:scale-105 transition-transform duration-500 bg-brand-lightCard dark:bg-brand-darkCard border border-brand-pinkPastel/40 shadow-md overflow-hidden relative group" style="border-radius: 50%;">
+                <div class="absolute inset-0 bg-gradient-to-tr from-brand-pinkPastel/20 to-transparent pointer-events-none" style="border-radius: 50%;"></div>
+                <img src="LOGO - Pink Studio - sin fondo.png" alt="Logo Principal Pink Studio" class="relative z-10 w-full h-full object-cover">
+            </div>
+            
+            <h1 class="font-serif text-5xl md:text-7xl font-extralight tracking-tight mb-6 text-zinc-900 dark:text-white leading-tight">
+                Bienvenidos a <br class="sm:hidden">
+                <span class="font-normal italic text-brand-pinkDark dark:text-brand-accent relative inline-block">
+                    Pink Studio
+                    <span class="absolute left-0 bottom-1 w-full h-[3px] bg-brand-pinkMedium/40"></span>
+                </span>
+            </h1>
+            
+            <p class="text-lg md:text-xl text-brand-pinkDark/90 dark:text-zinc-300 font-light max-w-2xl mx-auto mb-10 leading-relaxed">
+                Diseño visual sofisticado, delicado y con propósito para marcas que buscan destacar con personalidad y profesionalismo.
+            </p>
+
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                <a href="#portfolio" class="w-full sm:w-auto px-8 py-4 bg-brand-pinkMedium hover:bg-brand-pinkDark text-white font-medium rounded-full shadow-lg shadow-brand-pinkMedium/30 dark:shadow-none hover:-translate-y-0.5 transition-all text-sm tracking-wide">
+                    Explorar Portfolio <i class="fa-solid fa-arrow-down ml-2 text-xs"></i>
+                </a>
+                <a href="#contacto" class="w-full sm:w-auto px-8 py-4 bg-brand-lightCard hover:bg-brand-pinkPastel/40 dark:bg-brand-darkCard dark:hover:bg-zinc-800 text-brand-pinkDark dark:text-zinc-200 font-medium rounded-full border border-brand-pinkPastel/70 dark:border-zinc-700/50 hover:-translate-y-0.5 transition-all text-sm tracking-wide">
+                    Contactar
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Sobre Mí / Presentación Celeste -->
+    <section id="sobre-mi" class="py-20 bg-brand-lightCard dark:bg-brand-darkCard border-y border-brand-pinkPastel/30 dark:border-zinc-800/50 relative">
+        <div class="max-w-5xl mx-auto px-6">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                
+                <!-- Columna Izquierda: Logo redondo impecable -->
+                <div class="lg:col-span-5 flex justify-center">
+                    <div class="relative w-72 h-72 sm:w-80 sm:h-80 md:w-96 md:h-96 aspect-square flex items-center justify-center p-4 overflow-hidden group bg-brand-lightBg dark:bg-zinc-900 border border-brand-pinkPastel/40 shadow-sm" style="border-radius: 50%;">
+                        <!-- Destellos sutiles de fondo -->
+                        <div class="absolute -top-10 -right-10 w-40 h-40 bg-brand-pinkPastel/40 rounded-full blur-2xl"></div>
+                        <div class="absolute -bottom-10 -left-10 w-40 h-40 bg-brand-pinkMedium/20 rounded-full blur-2xl"></div>
+                        
+                        <!-- Logo Transparente -->
+                        <img src="LOGO - Pink Studio - sin fondo.png" alt="Logo Estudio" class="relative z-10 w-full h-full object-cover transition-all duration-500 group-hover:scale-105">
+                    </div>
+                </div>
+
+                <!-- Columna Derecha: Texto Celeste -->
+                <div class="lg:col-span-7 space-y-6">
+                    <div class="space-y-2">
+                        <h2 class="font-serif text-3xl md:text-4xl font-normal text-zinc-900 dark:text-white">Hola, soy Celeste</h2>
+                        <p class="text-brand-pinkDark dark:text-brand-pinkMedium font-semibold text-sm tracking-wide">Diseñadora y creadora de Pink Studio</p>
+                    </div>
+
+                    <div class="space-y-4 text-zinc-700 dark:text-zinc-300 font-light leading-relaxed text-base md:text-lg">
+                        <p>
+                            Creo que un buen diseño no solo se ve bonito: <strong class="font-semibold text-brand-pinkDark dark:text-white">comunica, conecta y hace que una marca destaque</strong>. Mi trabajo consiste en transformar ideas en identidades visuales que transmitan personalidad, profesionalismo y confianza.
+                        </p>
+                        <p>
+                            En <strong class="font-semibold text-brand-pinkDark dark:text-brand-accent">Pink Studio</strong> me especializo en crear diseños pensados para cada cliente, cuidando cada detalle para que el resultado no solo sea atractivo, sino también efectivo. Desde branding e identidad visual hasta piezas gráficas para redes sociales y proyectos digitales, cada trabajo es desarrollado con creatividad, estrategia y dedicación.
+                        </p>
+                        <p class="text-sm border-l-2 border-brand-pinkMedium pl-4 italic text-brand-pinkDark dark:text-zinc-400">
+                            Si llegaste hasta aca, te invito a recorrer mi portfolio y descubrir algunos de los proyectos en los que he trabajado. Detrás de cada diseño hay una historia, una idea y el compromiso de crear algo único.
+                        </p>
+                    </div>
+
+                    <div class="pt-4">
+                        <p class="text-sm font-semibold text-brand-pinkDark dark:text-white flex items-center gap-2">
+                            <span><i class="fa-solid fa-heart text-brand-accent animate-pulse mr-1"></i> Gracias por visitar Pink Studio. Estoy lista para ayudar a que tu marca tenga la imagen que merece.</span>
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Portfolio de Trabajos (Flyers y Diseños reales) -->
+    <section id="portfolio" class="py-24">
+        <div class="max-w-6xl mx-auto px-6">
+            
+            <!-- Encabezado de la Sección -->
+            <div class="text-center space-y-3 mb-16">
+                <span class="text-xs font-semibold tracking-[0.25em] uppercase text-brand-pinkDark dark:text-brand-accent">Galería de Proyectos</span>
+                <h2 class="font-serif text-4xl md:text-5xl font-light text-zinc-900 dark:text-white">Mi Trabajo</h2>
+                <div class="w-16 h-[2px] bg-brand-pinkMedium mx-auto mt-4"></div>
+                <p class="text-brand-pinkDark/80 dark:text-zinc-400 max-w-lg mx-auto text-sm font-light mt-2">Explora mis propuestas de diseño gráfico categorizadas por sector.</p>
+            </div>
+
+            <!-- Controles de Filtros Rosas -->
+            <div class="flex flex-wrap justify-center items-center gap-3 mb-12">
+                <button onclick="filterGallery('todos')" id="btn-todos" class="filter-btn px-6 py-2.5 rounded-full text-xs tracking-wider uppercase font-semibold bg-brand-pinkMedium text-white border border-brand-pinkMedium transition-all duration-300 shadow-md">
+                    Todos
+                </button>
+                <button onclick="filterGallery('iglesia')" id="btn-iglesia" class="filter-btn px-6 py-2.5 rounded-full text-xs tracking-wider uppercase font-semibold bg-brand-lightCard dark:bg-brand-darkCard text-brand-pinkDark dark:text-zinc-300 hover:bg-brand-pinkPastel/40 border border-brand-pinkPastel transition-all duration-300">
+                    Iglesia
+                </button>
+                <button onclick="filterGallery('gimnasio')" id="btn-gimnasio" class="filter-btn px-6 py-2.5 rounded-full text-xs tracking-wider uppercase font-semibold bg-brand-lightCard dark:bg-brand-darkCard text-brand-pinkDark dark:text-zinc-300 hover:bg-brand-pinkPastel/40 border border-brand-pinkPastel transition-all duration-300">
+                    Gimnasio
+                </button>
+                <button onclick="filterGallery('otros')" id="btn-otros" class="filter-btn px-6 py-2.5 rounded-full text-xs tracking-wider uppercase font-semibold bg-brand-lightCard dark:bg-brand-darkCard text-brand-pinkDark dark:text-zinc-300 hover:bg-brand-pinkPastel/40 border border-brand-pinkPastel transition-all duration-300">
+                    Otros Proyectos
+                </button>
+            </div>
+
+            <!-- Grilla del Portfolio con Flyers Reales -->
+            <div id="portfolio-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                
+                <!-- Tarjeta 1: Iglesia - Domingo Adoración -->
+                <div class="portfolio-item group relative cursor-pointer overflow-hidden rounded-2xl border border-brand-pinkPastel/60 dark:border-zinc-800 shadow-md hover:shadow-xl transition-all duration-500 hover:-translate-y-1.5" data-category="iglesia" onclick="openLightbox('Domingo de Adoración', 'Diseño de flyer contemporáneo enfocado en transmitir espiritualidad, serenidad y comunidad. Combina tipografías sans-serif de impacto visual y una cuidada composición en tonos fríos.', 'domingo adoracion.png', 'Iglesia')">
+                    <div class="w-full aspect-[4/5] overflow-hidden relative bg-zinc-100 dark:bg-zinc-950">
+                        <img src="domingo adoracion.png" alt="Domingo de Adoración" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                        <div class="absolute inset-0 bg-gradient-to-t from-brand-darkBg/95 via-brand-darkBg/45 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
+                            <span class="text-[10px] font-bold tracking-widest text-brand-pinkPastel uppercase">Iglesia</span>
+                            <h3 class="font-serif text-2xl font-semibold text-white mt-1 leading-tight">Domingo de Adoración</h3>
+                            <p class="text-xs text-zinc-300 font-light mt-2 line-clamp-2">Composición contemporánea que une fe, fotografía rústica y tipografías imponentes.</p>
+                            <span class="text-brand-pinkMedium text-xs font-semibold mt-4 flex items-center gap-1.5">
+                                Ver Detalle <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="p-4 bg-brand-lightCard dark:bg-brand-darkCard flex items-center justify-between border-t border-brand-pinkPastel/30 dark:border-zinc-800/50">
+                        <div>
+                            <p class="text-[10px] uppercase tracking-widest text-brand-pinkMedium font-semibold">Iglesia</p>
+                            <h4 class="font-serif text-sm font-semibold text-zinc-900 dark:text-white">Domingo de Adoración</h4>
+                        </div>
+                        <div class="w-8 h-8 rounded-full bg-brand-pinkPastel/30 dark:bg-zinc-800/80 flex items-center justify-center text-brand-pinkDark dark:text-brand-pinkPastel text-xs">
+                            <i class="fa-solid fa-chevron-right"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tarjeta 2: Gimnasio - Desafío 30 Días -->
+                <div class="portfolio-item group relative cursor-pointer overflow-hidden rounded-2xl border border-brand-pinkPastel/60 dark:border-zinc-800 shadow-md hover:shadow-xl transition-all duration-500 hover:-translate-y-1.5" data-category="gimnasio" onclick="openLightbox('Desafío 30 Días', 'Diseño de alto impacto visual y motivacional para entrenamiento funcional. Uso estratégico de contrastes profundos, iluminación cálida y tipografías imponentes en tonos púrpura.', 'desafio 30 dias.png', 'Gimnasio')">
+                    <div class="w-full aspect-[4/5] overflow-hidden relative bg-zinc-100 dark:bg-zinc-950">
+                        <img src="desafio 30 dias.png" alt="Desafío 30 Días" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                        <div class="absolute inset-0 bg-gradient-to-t from-brand-darkBg/95 via-brand-darkBg/45 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
+                            <span class="text-[10px] font-bold tracking-widest text-brand-pinkPastel uppercase">Gimnasio</span>
+                            <h3 class="font-serif text-2xl font-semibold text-white mt-1 leading-tight">Desafío 30 Días</h3>
+                            <p class="text-xs text-zinc-300 font-light mt-2 line-clamp-2">Visual dinámico y moderno con acentos deportivos que transmiten fuerza y enfoque profesional.</p>
+                            <span class="text-brand-pinkMedium text-xs font-semibold mt-4 flex items-center gap-1.5">
+                                Ver Detalle <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="p-4 bg-brand-lightCard dark:bg-brand-darkCard flex items-center justify-between border-t border-brand-pinkPastel/30 dark:border-zinc-800/50">
+                        <div>
+                            <p class="text-[10px] uppercase tracking-widest text-brand-pinkMedium font-semibold">Gimnasio</p>
+                            <h4 class="font-serif text-sm font-semibold text-zinc-900 dark:text-white">Desafío 30 Días</h4>
+                        </div>
+                        <div class="w-8 h-8 rounded-full bg-brand-pinkPastel/30 dark:bg-zinc-800/80 flex items-center justify-center text-brand-pinkDark dark:text-brand-pinkPastel text-xs">
+                            <i class="fa-solid fa-chevron-right"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tarjeta 3: Iglesia - Conferencia Jóvenes -->
+                <div class="portfolio-item group relative cursor-pointer overflow-hidden rounded-2xl border border-brand-pinkPastel/60 dark:border-zinc-800 shadow-md hover:shadow-xl transition-all duration-500 hover:-translate-y-1.5" data-category="iglesia" onclick="openLightbox('Conferencia de Jóvenes', 'Propuesta editorial con look cinematográfico y juvenil. Utiliza una composición fotográfica cálida y texturas retro-vintage.', 'conferenciajovenes.png', 'Iglesia')">
+                    <div class="w-full aspect-[4/5] overflow-hidden relative bg-zinc-100 dark:bg-zinc-950">
+                        <img src="conferenciajovenes.png" alt="Conferencia de Jóvenes" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                        <div class="absolute inset-0 bg-gradient-to-t from-brand-darkBg/95 via-brand-darkBg/45 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
+                            <span class="text-[10px] font-bold tracking-widest text-brand-pinkPastel uppercase">Iglesia</span>
+                            <h3 class="font-serif text-2xl font-semibold text-white mt-1 leading-tight">Conferencia de Jóvenes</h3>
+                            <p class="text-xs text-zinc-300 font-light mt-2 line-clamp-2">Una fusión única de texturas granuladas, colores cálidos e identidad de marca fresca para el sector juvenil.</p>
+                            <span class="text-brand-pinkMedium text-xs font-semibold mt-4 flex items-center gap-1.5">
+                                Ver Detalle <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="p-4 bg-brand-lightCard dark:bg-brand-darkCard flex items-center justify-between border-t border-brand-pinkPastel/30 dark:border-zinc-800/50">
+                        <div>
+                            <p class="text-[10px] uppercase tracking-widest text-brand-pinkMedium font-semibold">Iglesia</p>
+                            <h4 class="font-serif text-sm font-semibold text-zinc-900 dark:text-white">Conferencia Jóvenes</h4>
+                        </div>
+                        <div class="w-8 h-8 rounded-full bg-brand-pinkPastel/30 dark:bg-zinc-800/80 flex items-center justify-center text-brand-pinkDark dark:text-brand-pinkPastel text-xs">
+                            <i class="fa-solid fa-chevron-right"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tarjeta 4: Gimnasio - Funcional GAP -->
+                <div class="portfolio-item group relative cursor-pointer overflow-hidden rounded-2xl border border-brand-pinkPastel/60 dark:border-zinc-800 shadow-md hover:shadow-xl transition-all duration-500 hover:-translate-y-1.5" data-category="gimnasio" onclick="openLightbox('Clases de Funcional G.A.P.', 'Diseño urbano con toques de alto impacto deportivo. Utiliza texturas de asfalto oscuro, tipografía rústica desgastada y pinceladas violeta neón para evocar fuerza y determinación.', 'gym.png', 'Gimnasio')">
+                    <div class="w-full aspect-[4/5] overflow-hidden relative bg-zinc-100 dark:bg-zinc-950">
+                        <img src="gym.png" alt="Clases de Funcional G.A.P." class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                        <div class="absolute inset-0 bg-gradient-to-t from-brand-darkBg/95 via-brand-darkBg/45 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
+                            <span class="text-[10px] font-bold tracking-widest text-brand-pinkPastel uppercase">Gimnasio</span>
+                            <h3 class="font-serif text-2xl font-semibold text-white mt-1 leading-tight">Clases Funcional G.A.P.</h3>
+                            <p class="text-xs text-zinc-300 font-light mt-2 line-clamp-2">Estructura moderna y enérgica que atrae la mirada de los entusiastas del fitness.</p>
+                            <span class="text-brand-pinkMedium text-xs font-semibold mt-4 flex items-center gap-1.5">
+                                Ver Detalle <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="p-4 bg-brand-lightCard dark:bg-brand-darkCard flex items-center justify-between border-t border-brand-pinkPastel/30 dark:border-zinc-800/50">
+                        <div>
+                            <p class="text-[10px] uppercase tracking-widest text-brand-pinkMedium font-semibold">Gimnasio</p>
+                            <h4 class="font-serif text-sm font-semibold text-zinc-900 dark:text-white">Funcional G.A.P.</h4>
+                        </div>
+                        <div class="w-8 h-8 rounded-full bg-brand-pinkPastel/30 dark:bg-zinc-800/80 flex items-center justify-center text-brand-pinkDark dark:text-brand-pinkPastel text-xs">
+                            <i class="fa-solid fa-chevron-right"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tarjeta 5: Otros - Spa y Belleza -->
+                <div class="portfolio-item group relative cursor-pointer overflow-hidden rounded-2xl border border-brand-pinkPastel/60 dark:border-zinc-800 shadow-md hover:shadow-xl transition-all duration-500 hover:-translate-y-1.5" data-category="otros" onclick="openLightbox('Cuidado de la Piel', 'Diseño editorial ultra-delicado y limpio para cosmética y spa. Tonos neutros, beiges cálidos y rosas pastel que transmiten bienestar, paz, pureza y cuidado personal.', 'spa.png', 'Otros Proyectos')">
+                    <div class="w-full aspect-[4/5] overflow-hidden relative bg-zinc-100 dark:bg-zinc-950">
+                        <img src="spa.png" alt="Cuidado de la Piel" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                        <div class="absolute inset-0 bg-gradient-to-t from-brand-darkBg/95 via-brand-darkBg/45 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
+                            <span class="text-[10px] font-bold tracking-widest text-brand-pinkPastel uppercase">Estética & Spa</span>
+                            <h3 class="font-serif text-2xl font-semibold text-white mt-1 leading-tight">Cuidado de la Piel</h3>
+                            <p class="text-xs text-zinc-300 font-light mt-2 line-clamp-2">Una maquetación sumamente delicada y balanceada, perfecta para el sector estético y de bienestar.</p>
+                            <span class="text-brand-pinkMedium text-xs font-semibold mt-4 flex items-center gap-1.5">
+                                Ver Detalle <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="p-4 bg-brand-lightCard dark:bg-brand-darkCard flex items-center justify-between border-t border-brand-pinkPastel/30 dark:border-zinc-800/50">
+                        <div>
+                            <p class="text-[10px] uppercase tracking-widest text-brand-pinkMedium font-semibold">Estética</p>
+                            <h4 class="font-serif text-sm font-semibold text-zinc-900 dark:text-white">Cuidado de la Piel</h4>
+                        </div>
+                        <div class="w-8 h-8 rounded-full bg-brand-pinkPastel/30 dark:bg-zinc-800/80 flex items-center justify-center text-brand-pinkDark dark:text-brand-pinkPastel text-xs">
+                            <i class="fa-solid fa-chevron-right"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tarjeta 6: Otros - Modo Café -->
+                <div class="portfolio-item group relative cursor-pointer overflow-hidden rounded-2xl border border-brand-pinkPastel/60 dark:border-zinc-800 shadow-md hover:shadow-xl transition-all duration-500 hover:-translate-y-1.5" data-category="otros" onclick="openLightbox('Modo Café', 'Diseño minimalista conceptual de lifestyle y cafeterías. Propone una retícula de contraste con tipografías serif rústicas de gran tamaño que enmarcan una taza de café perfecta.', 'Home.png', 'Otros Proyectos')">
+                    <div class="w-full aspect-[4/5] overflow-hidden relative bg-zinc-100 dark:bg-zinc-950">
+                        <img src="Home.png" alt="Modo Café" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                        <div class="absolute inset-0 bg-gradient-to-t from-brand-darkBg/95 via-brand-darkBg/45 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
+                            <span class="text-[10px] font-bold tracking-widest text-brand-pinkPastel uppercase">Lifestyle / Branding</span>
+                            <h3 class="font-serif text-2xl font-semibold text-white mt-1 leading-tight">Modo Café</h3>
+                            <p class="text-xs text-zinc-300 font-light mt-2 line-clamp-2">Una propuesta editorial audaz, moderna y con un excelente balance de espacios vacíos.</p>
+                            <span class="text-brand-pinkMedium text-xs font-semibold mt-4 flex items-center gap-1.5">
+                                Ver Detalle <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="p-4 bg-brand-lightCard dark:bg-brand-darkCard flex items-center justify-between border-t border-brand-pinkPastel/30 dark:border-zinc-800/50">
+                        <div>
+                            <p class="text-[10px] uppercase tracking-widest text-brand-pinkMedium font-semibold">Branding</p>
+                            <h4 class="font-serif text-sm font-semibold text-zinc-900 dark:text-white">Modo Café</h4>
+                        </div>
+                        <div class="w-8 h-8 rounded-full bg-brand-pinkPastel/30 dark:bg-zinc-800/80 flex items-center justify-center text-brand-pinkDark dark:text-brand-pinkPastel text-xs">
+                            <i class="fa-solid fa-chevron-right"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tarjeta 7: Iglesia - Campamento Conectados -->
+                <div class="portfolio-item group relative cursor-pointer overflow-hidden rounded-2xl border border-brand-pinkPastel/60 dark:border-zinc-800 shadow-md hover:shadow-xl transition-all duration-500 hover:-translate-y-1.5" data-category="iglesia" onclick="openLightbox('Campamento Conectados', 'Flyer publicitario de alto impacto con estética juvenil y cyberpunk. Combina el contraste del verde neón flúor sobre un fondo oscuro texturizado, ideal para eventos dinámicos y campamentos de jóvenes.', 'Campamento CONECTADOS.png', 'Iglesia')">
+                    <div class="w-full aspect-[4/5] overflow-hidden relative bg-zinc-100 dark:bg-zinc-950">
+                        <img src="Campamento CONECTADOS.png" alt="Campamento CONECTADOS" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                        <div class="absolute inset-0 bg-gradient-to-t from-brand-darkBg/95 via-brand-darkBg/45 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
+                            <span class="text-[10px] font-bold tracking-widest text-brand-pinkPastel uppercase">Iglesia</span>
+                            <h3 class="font-serif text-2xl font-semibold text-white mt-1 leading-tight">Campamento Conectados</h3>
+                            <p class="text-xs text-zinc-300 font-light mt-2 line-clamp-2">Una propuesta enérgica y urbana de alto contraste visual para eventos juveniles.</p>
+                            <span class="text-brand-pinkMedium text-xs font-semibold mt-4 flex items-center gap-1.5">
+                                Ver Detalle <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="p-4 bg-brand-lightCard dark:bg-brand-darkCard flex items-center justify-between border-t border-brand-pinkPastel/30 dark:border-zinc-800/50">
+                        <div>
+                            <p class="text-[10px] uppercase tracking-widest text-brand-pinkMedium font-semibold">Iglesia / Jóvenes</p>
+                            <h4 class="font-serif text-sm font-semibold text-zinc-900 dark:text-white">Campamento Conectados</h4>
+                        </div>
+                        <div class="w-8 h-8 rounded-full bg-brand-pinkPastel/30 dark:bg-zinc-800/80 flex items-center justify-center text-brand-pinkDark dark:text-brand-pinkPastel text-xs">
+                            <i class="fa-solid fa-chevron-right"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tarjeta 8: Otros - Plantillas Podológicas -->
+                <div class="portfolio-item group relative cursor-pointer overflow-hidden rounded-2xl border border-brand-pinkPastel/60 dark:border-zinc-800 shadow-md hover:shadow-xl transition-all duration-500 hover:-translate-y-1.5" data-category="otros" onclick="openLightbox('Diseño de Plantillas Personalizadas', 'Afiche publicitario informativo y corporativo en gama de azules y verdes suaves. Maquetación limpia, organizada e ideal para la promoción de servicios de salud, podología o kinesiología profesional.', 'Póster Cartel anuncio servicio podológico profesional para el cuidado y la salud de los pies Publicidad Azul.png', 'Otros Proyectos')">
+                    <div class="w-full aspect-[4/5] overflow-hidden relative bg-zinc-100 dark:bg-zinc-950">
+                        <img src="Póster Cartel anuncio servicio podológico profesional para el cuidado y la salud de los pies Publicidad Azul.png" alt="Diseño de Plantillas Personalizadas" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                        <div class="absolute inset-0 bg-gradient-to-t from-brand-darkBg/95 via-brand-darkBg/45 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
+                            <span class="text-[10px] font-bold tracking-widest text-brand-pinkPastel uppercase">Salud / Comercial</span>
+                            <h3 class="font-serif text-2xl font-semibold text-white mt-1 leading-tight">Servicios Podológicos</h3>
+                            <p class="text-xs text-zinc-300 font-light mt-2 line-clamp-2">Maquetación clara y limpia con paleta corporativa y bloques de información sumamente estructurados.</p>
+                            <span class="text-brand-pinkMedium text-xs font-semibold mt-4 flex items-center gap-1.5">
+                                Ver Detalle <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="p-4 bg-brand-lightCard dark:bg-brand-darkCard flex items-center justify-between border-t border-brand-pinkPastel/30 dark:border-zinc-800/50">
+                        <div>
+                            <p class="text-[10px] uppercase tracking-widest text-brand-pinkMedium font-semibold">Salud & Bienestar</p>
+                            <h4 class="font-serif text-sm font-semibold text-zinc-900 dark:text-white">Plantillas Personalizadas</h4>
+                        </div>
+                        <div class="w-8 h-8 rounded-full bg-brand-pinkPastel/30 dark:bg-zinc-800/80 flex items-center justify-center text-brand-pinkDark dark:text-brand-pinkPastel text-xs">
+                            <i class="fa-solid fa-chevron-right"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tarjeta 9: Iglesia - Nada es imposible para Dios -->
+                <div class="portfolio-item group relative cursor-pointer overflow-hidden rounded-2xl border border-brand-pinkPastel/60 dark:border-zinc-800 shadow-md hover:shadow-xl transition-all duration-500 hover:-translate-y-1.5" data-category="iglesia" onclick="openLightbox('Frase Inspiradora - Nada es Imposible', 'Post conceptual minimalista con fotografía de fondo marino y tipografía block. Representa serenidad, esperanza y fuerza de una manera elegante y sofisticada para redes sociales.', 'Post de Instagram Frase inspiradora Minimalista Azul.png', 'Iglesia')">
+                    <div class="w-full aspect-[4/5] overflow-hidden relative bg-zinc-100 dark:bg-zinc-950">
+                        <img src="Post de Instagram Frase inspiradora Minimalista Azul.png" alt="Frase Inspiradora" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                        <div class="absolute inset-0 bg-gradient-to-t from-brand-darkBg/95 via-brand-darkBg/45 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
+                            <span class="text-[10px] font-bold tracking-widest text-brand-pinkPastel uppercase">Iglesia</span>
+                            <h3 class="font-serif text-2xl font-semibold text-white mt-1 leading-tight">Nada es Imposible</h3>
+                            <p class="text-xs text-zinc-300 font-light mt-2 line-clamp-2">Elegante posteo reflexivo que fusiona texturas naturales de agua y diseño tipográfico refinado.</p>
+                            <span class="text-brand-pinkMedium text-xs font-semibold mt-4 flex items-center gap-1.5">
+                                Ver Detalle <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="p-4 bg-brand-lightCard dark:bg-brand-darkCard flex items-center justify-between border-t border-brand-pinkPastel/30 dark:border-zinc-800/50">
+                        <div>
+                            <p class="text-[10px] uppercase tracking-widest text-brand-pinkMedium font-semibold">Iglesia / Redes</p>
+                            <h4 class="font-serif text-sm font-semibold text-zinc-900 dark:text-white">Frase Inspiradora</h4>
+                        </div>
+                        <div class="w-8 h-8 rounded-full bg-brand-pinkPastel/30 dark:bg-zinc-800/80 flex items-center justify-center text-brand-pinkDark dark:text-brand-pinkPastel text-xs">
+                            <i class="fa-solid fa-chevron-right"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tarjeta 10: Iglesia - Santa Cena Corona de Espinas -->
+                <div class="portfolio-item group relative cursor-pointer overflow-hidden rounded-2xl border border-brand-pinkPastel/60 dark:border-zinc-800 shadow-md hover:shadow-xl transition-all duration-500 hover:-translate-y-1.5" data-category="iglesia" onclick="openLightbox('Santa Cena - Domingo 18hs', 'Posteo ultra-minimalista de alto contraste editorial. El uso de la corona de espinas hiperrealista en el centro con una tipografía entrelazada genera un impacto visual sobrio, sagrado y muy profesional.', 'Historia para Instagram Domingo de Ramos Iglesia Minimalista Blanco.png', 'Iglesia')">
+                    <div class="w-full aspect-[4/5] overflow-hidden relative bg-zinc-100 dark:bg-zinc-950">
+                        <img src="Historia para Instagram Domingo de Ramos Iglesia Minimalista Blanco.png" alt="Santa Cena Domingo" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                        <div class="absolute inset-0 bg-gradient-to-t from-brand-darkBg/95 via-brand-darkBg/45 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
+                            <span class="text-[10px] font-bold tracking-widest text-brand-pinkPastel uppercase">Iglesia</span>
+                            <h3 class="font-serif text-2xl font-semibold text-white mt-1 leading-tight">Santa Cena (Espinas)</h3>
+                            <p class="text-xs text-zinc-300 font-light mt-2 line-clamp-2">Una pieza sumamente solemne y conceptual con composición descentrada y tipografía de vanguardia.</p>
+                            <span class="text-brand-pinkMedium text-xs font-semibold mt-4 flex items-center gap-1.5">
+                                Ver Detalle <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="p-4 bg-brand-lightCard dark:bg-brand-darkCard flex items-center justify-between border-t border-brand-pinkPastel/30 dark:border-zinc-800/50">
+                        <div>
+                            <p class="text-[10px] uppercase tracking-widest text-brand-pinkMedium font-semibold">Iglesia / Comunidad</p>
+                            <h4 class="font-serif text-sm font-semibold text-zinc-900 dark:text-white">Santa Cena — 18 HS</h4>
+                        </div>
+                        <div class="w-8 h-8 rounded-full bg-brand-pinkPastel/30 dark:bg-zinc-800/80 flex items-center justify-center text-brand-pinkDark dark:text-brand-pinkPastel text-xs">
+                            <i class="fa-solid fa-chevron-right"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tarjeta 11: Iglesia - Santa Cena Pan y Vino -->
+                <div class="portfolio-item group relative cursor-pointer overflow-hidden rounded-2xl border border-brand-pinkPastel/60 dark:border-zinc-800 shadow-md hover:shadow-xl transition-all duration-500 hover:-translate-y-1.5" data-category="iglesia" onclick="openLightbox('Santa Cena - Domingo 19hs', 'Diseño de historia interactivo en tonos azul grisáceo y neutros. Representa el pan y el vino consagrado a través de un montaje fotográfico nítido y tipografía elegante.', 'Historia para instagram invitacion religiosa azul y gris.png', 'Iglesia')">
+                    <div class="w-full aspect-[4/5] overflow-hidden relative bg-zinc-100 dark:bg-zinc-950">
+                        <img src="Historia para instagram invitacion religiosa azul y gris.png" alt="Santa Cena Invitación" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                        <div class="absolute inset-0 bg-gradient-to-t from-brand-darkBg/95 via-brand-darkBg/45 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
+                            <span class="text-[10px] font-bold tracking-widest text-brand-pinkPastel uppercase">Iglesia</span>
+                            <h3 class="font-serif text-2xl font-semibold text-white mt-1 leading-tight">Santa Cena (Pan y Vino)</h3>
+                            <p class="text-xs text-zinc-300 font-light mt-2 line-clamp-2">Estructura delicada que transmite emotividad espiritual, incorporando citas bíblicas directas.</p>
+                            <span class="text-brand-pinkMedium text-xs font-semibold mt-4 flex items-center gap-1.5">
+                                Ver Detalle <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="p-4 bg-brand-lightCard dark:bg-brand-darkCard flex items-center justify-between border-t border-brand-pinkPastel/30 dark:border-zinc-800/50">
+                        <div>
+                            <p class="text-[10px] uppercase tracking-widest text-brand-pinkMedium font-semibold">Iglesia / Comunidad</p>
+                            <h4 class="font-serif text-sm font-semibold text-zinc-900 dark:text-white">Santa Cena — 19 HS</h4>
+                        </div>
+                        <div class="w-8 h-8 rounded-full bg-brand-pinkPastel/30 dark:bg-zinc-800/80 flex items-center justify-center text-brand-pinkDark dark:text-brand-pinkPastel text-xs">
+                            <i class="fa-solid fa-chevron-right"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- NUEVA Tarjeta 12: Gimnasio - Portada Reels Rutina Gym -->
+                <div class="portfolio-item group relative cursor-pointer overflow-hidden rounded-2xl border border-brand-pinkPastel/60 dark:border-zinc-800 shadow-md hover:shadow-xl transition-all duration-500 hover:-translate-y-1.5" data-category="gimnasio" onclick="openLightbox('Rutina Personalizada Gym', 'Diseño dinámico de portada de reels para redes sociales en color cian. Con una composición limpia, tipografía gruesa e imagen moderna orientada a la motivación y rutinas de gimnasio.', 'Portada Para Reels Rutina Para Gym Gimnasio Moderno Verde Y Negro.png', 'Gimnasio')">
+                    <div class="w-full aspect-[4/5] overflow-hidden relative bg-zinc-100 dark:bg-zinc-950">
+                        <img src="Portada Para Reels Rutina Para Gym Gimnasio Moderno Verde Y Negro.png" alt="Rutina Personalizada Gym" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                        <div class="absolute inset-0 bg-gradient-to-t from-brand-darkBg/95 via-brand-darkBg/45 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
+                            <span class="text-[10px] font-bold tracking-widest text-brand-pinkPastel uppercase">Gimnasio</span>
+                            <h3 class="font-serif text-2xl font-semibold text-white mt-1 leading-tight">Rutina de Gym</h3>
+                            <p class="text-xs text-zinc-300 font-light mt-2 line-clamp-2">Una propuesta sumamente atractiva y de alto impacto para potenciar la marca de entrenadores en Reels.</p>
+                            <span class="text-brand-pinkMedium text-xs font-semibold mt-4 flex items-center gap-1.5">
+                                Ver Detalle <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="p-4 bg-brand-lightCard dark:bg-brand-darkCard flex items-center justify-between border-t border-brand-pinkPastel/30 dark:border-zinc-800/50">
+                        <div>
+                            <p class="text-[10px] uppercase tracking-widest text-brand-pinkMedium font-semibold">Gimnasio / Redes</p>
+                            <h4 class="font-serif text-sm font-semibold text-zinc-900 dark:text-white">Rutina Personalizada</h4>
+                        </div>
+                        <div class="w-8 h-8 rounded-full bg-brand-pinkPastel/30 dark:bg-zinc-800/80 flex items-center justify-center text-brand-pinkDark dark:text-brand-pinkPastel text-xs">
+                            <i class="fa-solid fa-chevron-right"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- NUEVA Tarjeta 13: Gimnasio - Portada Reels Boxeo -->
+                <div class="portfolio-item group relative cursor-pointer overflow-hidden rounded-2xl border border-brand-pinkPastel/60 dark:border-zinc-800 shadow-md hover:shadow-xl transition-all duration-500 hover:-translate-y-1.5" data-category="gimnasio" onclick="openLightbox('Clases de Boxeo', 'Diseño de alto contraste y gran impacto visual en color rojo y negro con pinceladas rústicas. Ideal para la promoción en Instagram de clases deportivas y entrenamientos de alta intensidad.', 'Portada Para Reels Instagram Rutina De Cardio Intenso Gimnasio Moderno Negro Y Verde.png', 'Gimnasio')">
+                    <div class="w-full aspect-[4/5] overflow-hidden relative bg-zinc-100 dark:bg-zinc-950">
+                        <img src="Portada Para Reels Instagram Rutina De Cardio Intenso Gimnasio Moderno Negro Y Verde.png" alt="Clases de Boxeo" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                        <div class="absolute inset-0 bg-gradient-to-t from-brand-darkBg/95 via-brand-darkBg/45 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
+                            <span class="text-[10px] font-bold tracking-widest text-brand-pinkPastel uppercase">Gimnasio</span>
+                            <h3 class="font-serif text-2xl font-semibold text-white mt-1 leading-tight">Clases de Boxeo</h3>
+                            <p class="text-xs text-zinc-300 font-light mt-2 line-clamp-2">Estructura potente y rebelde que capta de inmediato la atención del público aficionado al cardio y combate.</p>
+                            <span class="text-brand-pinkMedium text-xs font-semibold mt-4 flex items-center gap-1.5">
+                                Ver Detalle <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="p-4 bg-brand-lightCard dark:bg-brand-darkCard flex items-center justify-between border-t border-brand-pinkPastel/30 dark:border-zinc-800/50">
+                        <div>
+                            <p class="text-[10px] uppercase tracking-widest text-brand-pinkMedium font-semibold">Gimnasio / Redes</p>
+                            <h4 class="font-serif text-sm font-semibold text-zinc-900 dark:text-white">Clases de Boxeo</h4>
+                        </div>
+                        <div class="w-8 h-8 rounded-full bg-brand-pinkPastel/30 dark:bg-zinc-800/80 flex items-center justify-center text-brand-pinkDark dark:text-brand-pinkPastel text-xs">
+                            <i class="fa-solid fa-chevron-right"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- NUEVA Tarjeta 14: Gimnasio - Promo Gym 3x2 -->
+                <div class="portfolio-item group relative cursor-pointer overflow-hidden rounded-2xl border border-brand-pinkPastel/60 dark:border-zinc-800 shadow-md hover:shadow-xl transition-all duration-500 hover:-translate-y-1.5" data-category="gimnasio" onclick="openLightbox('Promo Gym 3x2', 'Flyer promocional comercial con estilo deportivo de alta gama. Combina texturas oscuras desenfocadas de mancuernas con trazos de pincel en color verde flúor para destacar la oferta de inscripción gratuita y promoción 3x2.', 'Post de Facebook Promo Gym Dinamico Negro Rosa.png', 'Gimnasio')">
+                    <div class="w-full aspect-[4/5] overflow-hidden relative bg-zinc-100 dark:bg-zinc-950">
+                        <img src="Post de Facebook Promo Gym Dinamico Negro Rosa.png" alt="Promo Gym 3x2" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                        <div class="absolute inset-0 bg-gradient-to-t from-brand-darkBg/95 via-brand-darkBg/45 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
+                            <span class="text-[10px] font-bold tracking-widest text-brand-pinkPastel uppercase">Gimnasio</span>
+                            <h3 class="font-serif text-2xl font-semibold text-white mt-1 leading-tight">Promo Gym 3x2</h3>
+                            <p class="text-xs text-zinc-300 font-light mt-2 line-clamp-2">Composición comercial sumamente clara, limpia y diseñada especialmente para incentivar cierres de venta.</p>
+                            <span class="text-brand-pinkMedium text-xs font-semibold mt-4 flex items-center gap-1.5">
+                                Ver Detalle <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="p-4 bg-brand-lightCard dark:bg-brand-darkCard flex items-center justify-between border-t border-brand-pinkPastel/30 dark:border-zinc-800/50">
+                        <div>
+                            <p class="text-[10px] uppercase tracking-widest text-brand-pinkMedium font-semibold">Gimnasio / Promo</p>
+                            <h4 class="font-serif text-sm font-semibold text-zinc-900 dark:text-white">Promo Gym 3x2</h4>
+                        </div>
+                        <div class="w-8 h-8 rounded-full bg-brand-pinkPastel/30 dark:bg-zinc-800/80 flex items-center justify-center text-brand-pinkDark dark:text-brand-pinkPastel text-xs">
+                            <i class="fa-solid fa-chevron-right"></i>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Sección de Contacto -->
+    <section id="contacto" class="py-24 bg-brand-lightBg dark:bg-zinc-950 border-t border-brand-pinkPastel/40 dark:border-zinc-900 relative">
+        <div class="max-w-4xl mx-auto px-6">
+            
+            <div class="text-center space-y-3 mb-16">
+                <span class="text-xs font-semibold tracking-[0.25em] uppercase text-brand-pinkDark dark:text-brand-accent">Hablemos de tu Proyecto</span>
+                <h2 class="font-serif text-4xl md:text-5xl font-light text-zinc-900 dark:text-white">Conectemos</h2>
+                <div class="w-16 h-[2px] bg-brand-pinkMedium mx-auto mt-4"></div>
+            </div>
+
+            <div class="bg-brand-lightCard dark:bg-brand-darkCard rounded-3xl p-8 md:p-12 border border-brand-pinkPastel dark:border-zinc-800 glow-pink-soft text-center space-y-8 max-w-2xl mx-auto relative overflow-hidden">
+                <div class="absolute -top-12 -left-12 w-36 h-36 bg-brand-pinkPastel/30 rounded-full blur-2xl"></div>
+                <div class="absolute -bottom-12 -right-12 w-36 h-36 bg-brand-pinkMedium/20 rounded-full blur-2xl"></div>
+
+                <div class="relative z-10 w-16 h-16 rounded-full bg-brand-pinkPastel/60 dark:bg-brand-pinkDark/30 text-brand-pinkDark dark:text-brand-accent flex items-center justify-center mx-auto text-2xl">
+                    <i class="fa-solid fa-paper-plane animate-bounce"></i>
+                </div>
+                
+                <div class="relative z-10 space-y-4">
+                    <h3 class="font-serif text-2xl text-zinc-900 dark:text-white">¿Listo para impulsar tu marca?</h3>
+                    <p class="text-brand-pinkDark/90 dark:text-zinc-300 font-light text-sm md:text-base max-w-md mx-auto leading-relaxed">
+                        Si te ha gustado mi estilo de trabajo y quieres un diseño personalizado para tu iglesia, gimnasio o negocio, te espero en mi perfil de Instagram. ¡Contáctame de forma directa!
+                    </p>
+                </div>
+
+                <div class="relative z-10 pt-4">
+                    <a href="https://www.instagram.com/pinkstudio.ar?igsh=MXZzcXdyMWIyOW15cA==" target="_blank" rel="noopener" class="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-brand-pinkMedium to-brand-accent hover:from-brand-pinkDark hover:to-brand-pinkDark text-white font-semibold text-sm tracking-wider uppercase rounded-full shadow-lg shadow-brand-pinkMedium/30 dark:shadow-none hover:-translate-y-0.5 transition-all">
+                        <i class="fa-brands fa-instagram text-lg"></i>
+                        <span>Ir a @pinkstudio.ar</span>
+                    </a>
+                </div>
+
+                <div class="relative z-10 text-[11px] text-brand-pinkDark/80 dark:text-zinc-500 uppercase tracking-widest pt-4">
+                    Celeste • Creadora de Pink Studio
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Pie de Página (Footer) -->
+    <footer class="py-12 bg-brand-lightCard dark:bg-brand-darkBg border-t border-brand-pinkPastel/40 dark:border-zinc-900/50 text-center text-xs text-brand-pinkDark dark:text-zinc-500 space-y-4">
+        <div class="flex items-center justify-center gap-2">
+            <span class="font-serif tracking-widest font-bold text-brand-pinkDark dark:text-white">PINK STUDIO</span>
+            <span>—</span>
+            <span>Derechos Reservados &copy; <span id="current-year">2026</span></span>
+        </div>
+        <p class="font-light">Diseñado y optimizado con dedicación, color y minimalismo.</p>
+    </footer>
+
+    <!-- Ventana Flotante de Visualización (Lightbox Modal) -->
+    <div id="lightbox" class="fixed inset-0 z-50 bg-black/95 backdrop-blur-md hidden items-center justify-center p-4 transition-all duration-300 opacity-0" onclick="closeLightboxOutside(event)">
+        
+        <!-- Botón de Cerrar -->
+        <button onclick="closeLightbox()" class="absolute top-6 right-6 text-white hover:text-brand-pinkPastel text-3xl focus:outline-none" aria-label="Cerrar ventana">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+
+        <div class="max-w-4xl w-full bg-brand-darkBg rounded-3xl overflow-hidden shadow-2xl border border-brand-darkCard flex flex-col md:flex-row relative max-h-[90vh]" onclick="event.stopPropagation()">
+            
+            <!-- Zona de Imagen del Flyer Real (Lado Izquierdo) -->
+            <div class="w-full md:w-1/2 bg-zinc-950 flex items-center justify-center p-6 relative overflow-hidden" id="lightbox-image-container">
+                <img id="lightbox-image-el" src="" alt="Flyer Ampliado" class="max-h-[70vh] w-auto object-contain rounded-xl shadow-lg border border-white/10 transition-all duration-300">
+            </div>
+
+            <!-- Zona de Información del Flyer (Lado Derecho) -->
+            <div class="w-full md:w-1/2 p-8 md:p-12 flex flex-col justify-between bg-zinc-900 text-zinc-100">
+                <div class="space-y-6">
+                    <div>
+                        <span id="lightbox-category" class="px-3 py-1 bg-brand-pinkDark/20 text-[10px] tracking-widest uppercase font-bold text-brand-accent rounded-full">Categoría</span>
+                        <h3 id="lightbox-title" class="font-serif text-3xl font-light mt-4 leading-tight">Título del Flyer</h3>
+                    </div>
+                    
+                    <div class="space-y-3">
+                        <h4 class="text-xs uppercase tracking-wider text-zinc-400 font-semibold">Detalles de Diseño</h4>
+                        <p id="lightbox-description" class="text-zinc-300 font-light text-sm leading-relaxed">
+                            Descripción detallada del enfoque visual y propósito de la pieza gráfica del portafolio.
+                        </p>
+                    </div>
+
+                    <div class="space-y-3 pt-2">
+                        <h4 class="text-xs uppercase tracking-wider text-zinc-400 font-semibold">Estudio de Diseño</h4>
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 rounded-full bg-brand-pinkPastel/20 flex items-center justify-center text-xs text-brand-accent">
+                                <i class="fa-solid fa-star-of-david"></i>
+                            </div>
+                            <span class="text-xs text-zinc-400">Concepto adaptativo creado por Celeste para Pink Studio.</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="pt-8 border-t border-zinc-800 flex justify-between items-center font-sans">
+                    <a href="https://www.instagram.com/pinkstudio.ar?igsh=MXZzcXdyMWIyOW15cA==" target="_blank" rel="noopener" class="text-xs text-brand-accent hover:text-white flex items-center gap-2">
+                        <span>Consultar por este estilo</span>
+                        <i class="fa-solid fa-arrow-right-long"></i>
+                    </a>
+                    <button onclick="closeLightbox()" class="px-5 py-2 bg-zinc-800 hover:bg-zinc-700 text-xs font-semibold uppercase rounded-full tracking-wider">Cerrar</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Scripts de Interacción -->
+    <script>
+        // Establecer el año actual dinámicamente en el footer
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+
+        // Control de Filtros de la Galería
+        function filterGallery(category) {
+            const items = document.querySelectorAll('.portfolio-item');
+            
+            // Actualizar estilo activo del botón seleccionado
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.className = "filter-btn px-6 py-2.5 rounded-full text-xs tracking-wider uppercase font-semibold bg-brand-lightCard dark:bg-brand-darkCard text-brand-pinkDark dark:text-zinc-300 hover:bg-brand-pinkPastel/40 border border-brand-pinkPastel transition-all duration-300";
+            });
+
+            const activeBtn = document.getElementById(`btn-${category}`);
+            if (activeBtn) {
+                activeBtn.className = "filter-btn px-6 py-2.5 rounded-full text-xs tracking-wider uppercase font-semibold bg-brand-pinkMedium text-white border border-brand-pinkMedium transition-all duration-300 shadow-md";
+            }
+
+            // Mostrar u ocultar elementos de la galería con un fade de opacidad
+            items.forEach(item => {
+                if (category === 'todos') {
+                    item.style.display = 'block';
+                    setTimeout(() => item.style.opacity = '1', 10);
+                } else if (item.getAttribute('data-category') === category) {
+                    item.style.display = 'block';
+                    setTimeout(() => item.style.opacity = '1', 10);
+                } else {
+                    item.style.opacity = '0';
+                    setTimeout(() => item.style.display = 'none', 300);
+                }
+            });
+        }
+
+        // Lógica de Ventana Flotante (Lightbox) con imágenes reales
+        function openLightbox(title, description, imgSrc, category) {
+            const lightbox = document.getElementById('lightbox');
+            const lTitle = document.getElementById('lightbox-title');
+            const lDesc = document.getElementById('lightbox-description');
+            const lCategory = document.getElementById('lightbox-category');
+            const lImg = document.getElementById('lightbox-image-el');
+
+            lTitle.textContent = title;
+            lDesc.textContent = description;
+            lCategory.textContent = category.toUpperCase();
+            lImg.src = imgSrc;
+
+            // Mostrar lightbox con efecto suave
+            lightbox.classList.remove('hidden');
+            lightbox.classList.add('flex');
+            setTimeout(() => {
+                lightbox.classList.remove('opacity-0');
+                lightbox.classList.add('opacity-100');
+            }, 50);
+        }
+
+        function closeLightbox() {
+            const lightbox = document.getElementById('lightbox');
+            lightbox.classList.remove('opacity-100');
+            lightbox.classList.add('opacity-0');
+            setTimeout(() => {
+                lightbox.classList.remove('flex');
+                lightbox.classList.add('hidden');
+            }, 300);
+        }
+
+        function closeLightboxOutside(event) {
+            closeLightbox();
+        }
+
+        // Lógica de Alternador de Tema Claro / Oscuro
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const themeIcon = document.getElementById('theme-icon');
+
+        if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+            themeIcon.className = "fa-solid fa-sun text-lg text-brand-pinkPastel";
+        } else {
+            document.documentElement.classList.remove('dark');
+            themeIcon.className = "fa-solid fa-moon text-lg text-brand-pinkDark";
+        }
+
+        themeToggleBtn.addEventListener('click', () => {
+            if (document.documentElement.classList.contains('dark')) {
+                document.documentElement.classList.remove('dark');
+                localStorage.setItem('theme', 'light');
+                themeIcon.className = "fa-solid fa-moon text-lg text-brand-pinkDark";
+            } else {
+                document.documentElement.classList.add('dark');
+                localStorage.setItem('theme', 'dark');
+                themeIcon.className = "fa-solid fa-sun text-lg text-brand-pinkPastel";
+            }
+        });
+
+        // Soporte para cerrar lightbox con tecla Escape
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeLightbox();
+            }
+        });
+    </script>
+</body>
+</html>
+```
+eof
